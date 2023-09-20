@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Experimental.Rendering;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
@@ -20,6 +21,7 @@ public class customPostProcessPass : ScriptableRenderPass
     private int[] _BloomMipDown;
     private RTHandle[] m_BloomMipUP;
     private RTHandle[] m_BloomMipDown;
+    private GraphicsFormat hdrFormat;
     
 
     
@@ -47,12 +49,25 @@ public class customPostProcessPass : ScriptableRenderPass
 
         }
 
+        const FormatUsage usage = FormatUsage.Linear | FormatUsage.Render;
+        if(SystemInfo.IsFormatSupported(GraphicsFormat.B10G11R11_UFloatPack32, usage))
+        {
+            hdrFormat = GraphicsFormat.B10G11R11_UFloatPack32;
+        }
+        else
+        {
+            hdrFormat = QualitySettings.activeColorSpace == ColorSpace.Linear
+                ? GraphicsFormat.R8G8B8A8_SRGB
+                : GraphicsFormat.R8G8B8A8_UNorm;
+        }
         
     }
 
     public override void Execute(ScriptableRenderContext context, ref RenderingData renderingData)
     {
-        
+        VolumeStack stack = VolumeManager.instance.stack;
+        bendayb
+
     }
 
     public override void OnCameraSetup(CommandBuffer cmd, ref RenderingData renderingData)
